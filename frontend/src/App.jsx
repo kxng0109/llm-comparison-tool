@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PromptInput from './components/PromptInput';
 import ResponseGrid from './components/ResponseGrid';
 import DarkModeToggle from './components/DarkModeToggle';
-import MetadataToggle from './components/MetadataToggle';
+import MetadataToggle from './components/MetaDataToggle';
 import HealthIndicator from './components/HealthIndicator';
 import { sendPromptToLLMs, getAvailableLLMs, checkHealth } from './services/api';
 
