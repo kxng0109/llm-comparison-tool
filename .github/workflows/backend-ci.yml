@@ -16,10 +16,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: backend
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -30,18 +26,23 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: maven
+          cache-dependency-path: 'backend/pom.xml'
 
       - name: Make Maven wrapper executable
-        run: chmod +x ./mvnw
+        run: chmod +x mvnw
+        working-directory: backend
 
       - name: Build with Maven
         run: ./mvnw clean install -DskipTests
+        working-directory: backend
 
       - name: Run unit tests
         run: ./mvnw test
+        working-directory: backend
 
       - name: Package application
         run: ./mvnw package -DskipTests
+        working-directory: backend
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

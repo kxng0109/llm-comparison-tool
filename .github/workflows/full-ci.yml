@@ -10,10 +10,6 @@ jobs:
   backend:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: backend
-
     steps:
       - uses: actions/checkout@v4
 
@@ -23,12 +19,15 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: maven
+          cache-dependency-path: 'backend/pom.xml'
 
       - name: Make Maven wrapper executable
-        run: chmod +x ./mvnw
+        run: chmod +x mvnw
+        working-directory: backend
 
       - name: Build and Test Backend
         run: ./mvnw clean verify
+        working-directory: backend
 
       - name: Upload backend JAR
         uses: actions/upload-artifact@v4
@@ -39,10 +38,6 @@ jobs:
   frontend:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: frontend
-
     steps:
       - uses: actions/checkout@v4
 
@@ -51,12 +46,13 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: 'frontend/package-lock.json'
 
       - name: Install and Build Frontend
         run: |
           npm ci
           npm run build
+        working-directory: frontend
 
       - name: Upload frontend build
         uses: actions/upload-artifact@v4
